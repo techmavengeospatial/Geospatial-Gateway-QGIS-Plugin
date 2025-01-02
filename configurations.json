@@ -1,0 +1,41 @@
+{
+    "TileServerUrl": "http://192.227.114.71",
+    "TileServerPort": "84",
+    "CollectionFormsBuilder": "https://mapdata.xyz/form_generator/",
+    "TeamCollaborationApplication": "",
+    "CatalogGenerator": "https://mapsdata.world/catalog_generator",
+    "Discover": "http://192.227.114.71:84/discover",
+    "Map3DTerriajs": "http://192.227.114.71:84/3dmap",
+    "Map2DOpenLayers": "http://192.227.114.71:84/map",
+    "EdgeTeamCollaborationModule": "http://192.227.114.71:84/login",
+    "DynamicVectorTiles": "http://192.227.114.71:7800",
+    "OGCApiFeature": "http://192.227.114.71:9000",
+    "COGEndpoint": "",
+    "CachedMapTiles": "http://192.227.114.71:84/services",
+    "UploadUrl": "http://192.227.114.71:84/upload/{type}",
+    "FileList": "http://192.227.114.71:84/filelist",
+    "ToPostgisDirect": [
+        {
+            "host": "localhost",
+            "port": "5432",
+            "database": "db_geonames",
+            "user": "postgres",
+            "password": "123",
+            "project_name": "test"
+        },
+        {
+            "host": "localhost",
+            "port": "5432",
+            "database": "planning",
+            "user": "postgres",
+            "password": "123",
+            "project_name": "ttt"
+        }
+    ],
+    "MBTilesDistribution": "http://192.227.114.71:84/mbtile/data_distribution",
+    "GPKGsDistribution": "http://192.227.114.71:84/gpkg/data_distribution",
+    "StylesDownload": "http://192.227.114.71:84/style/data_distribution",
+    "TransactionalAPI": "http://192.227.114.71:84/pg_transaction/{type}/{file_name}",
+    "TransactionalAPI_Upload": "http://192.227.114.71:84/pg_transaction",
+    "PocketBase": "http://192.227.114.71:8090"
+}
