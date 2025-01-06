@@ -5,7 +5,7 @@ from qgis.PyQt.QtCore import QSettings
 import requests
 import json
 from urllib.parse import urljoin
-
+from ..TSConfigurationsDialog import TSConfigurationsDialog
 class LoginDialog(QtWidgets.QDialog):
     def __init__(self, parent=None):
         super(LoginDialog, self).__init__(parent)
@@ -16,75 +16,94 @@ class LoginDialog(QtWidgets.QDialog):
         self.config_file = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'configurations.json')
         try:
             with open(self.config_file, 'r') as file:
-                config = json.load(file)
+                self.config = json.load(file)
         except FileNotFoundError:
             config = {}
-        pocketbaseUrl = config.get("PocketBase")
 
-        if pocketbaseUrl:
-            self.loginUrl = urljoin(pocketbaseUrl, '/api/collections/users/auth-with-password')
 
-            self.verifyLogin = urljoin(pocketbaseUrl, '/api/collections/users/auth-with-password')
-        # Logo
-            self.logo_label = QtWidgets.QLabel(self)
-            icon_path = os.path.join(os.path.dirname(os.path.dirname(__file__)) , "icon.png")
-            self.logo_pixmap = QtGui.QPixmap(os.path.join(os.path.dirname(__file__), icon_path))
-            self.logo_label.setPixmap(self.logo_pixmap.scaled(200, 50, QtCore.Qt.KeepAspectRatio))
-            self.logo_label.setAlignment(QtCore.Qt.AlignCenter)
+        # if pocketbaseUrl:
 
-            # Title
-            self.title_label = QtWidgets.QLabel("Tile Server Manager", self)
-            font = self.title_label.font()
-            font.setPointSize(14)
-            font.setBold(True)
-            self.title_label.setFont(font)
-            self.title_label.setAlignment(QtCore.Qt.AlignCenter)
 
-            # Username field
-            self.username_label = QtWidgets.QLabel("Username:", self)
-            self.username_input = QtWidgets.QLineEdit(self)
-            self.username_input.setText("")
-            self.username_input.setPlaceholderText("Enter your username")
-            self.username_input.setFixedHeight(30)
 
-            # Password field
-            self.password_label = QtWidgets.QLabel("Password:", self)
-            self.password_input = QtWidgets.QLineEdit(self)
-            self.password_input.setText("")
-            self.password_input.setPlaceholderText("Enter your password")
-            self.password_input.setFixedHeight(30)
-            self.password_input.setEchoMode(QtWidgets.QLineEdit.Password)
+    # Logo
+        self.logo_label = QtWidgets.QLabel(self)
+        icon_path = os.path.join(os.path.dirname(os.path.dirname(__file__)) , "icon.png")
+        self.logo_pixmap = QtGui.QPixmap(os.path.join(os.path.dirname(__file__), icon_path))
+        self.logo_label.setPixmap(self.logo_pixmap.scaled(200, 50, QtCore.Qt.KeepAspectRatio))
+        self.logo_label.setAlignment(QtCore.Qt.AlignCenter)
 
-            # Login button
-            self.login_button = QtWidgets.QPushButton("Login", self)
-            self.login_button.setFixedHeight(40)
-            self.login_button.clicked.connect(self.login)
+        # Title
+        self.title_label = QtWidgets.QLabel("Geospatial Gateway for Tile Server", self)
+        font = self.title_label.font()
+        font.setPointSize(14)
+        font.setBold(True)
+        self.title_label.setFont(font)
+        self.title_label.setAlignment(QtCore.Qt.AlignCenter)
 
-            # Layouts
-            self.layout = QtWidgets.QVBoxLayout()
-            self.layout.addWidget(self.logo_label)
-            self.layout.addWidget(self.title_label)
-            self.layout.addSpacing(10)
-            self.layout.addWidget(self.username_label)
-            self.layout.addWidget(self.username_input)
-            self.layout.addSpacing(10)
-            self.layout.addWidget(self.password_label)
-            self.layout.addWidget(self.password_input)
-            self.layout.addSpacing(20)
-            self.layout.addWidget(self.login_button)
+        # Username field
+        self.username_label = QtWidgets.QLabel("Username:", self)
+        self.username_input = QtWidgets.QLineEdit(self)
+        self.username_input.setText("ali@test.com")
+        self.username_input.setPlaceholderText("Enter your username")
+        self.username_input.setFixedHeight(30)
 
-            self.setLayout(self.layout)
-        else:
-            self.layout = QtWidgets.QVBoxLayout()
-            self.layout.addWidget(QtWidgets.QLabel('No Authentication Url Defined'))
-            self.layout.addSpacing(10)
+        # Password field
+        self.password_label = QtWidgets.QLabel("Password:", self)
+        self.password_input = QtWidgets.QLineEdit(self)
+        self.password_input.setText("abcd1234")
+        self.password_input.setPlaceholderText("Enter your password")
+        self.password_input.setFixedHeight(30)
+        self.password_input.setEchoMode(QtWidgets.QLineEdit.Password)
 
-            self.config_button = QtWidgets.QPushButton("Configure", self)
-            self.config_button.setFixedHeight(40)
-            self.config_button.clicked.connect(self.login)
-            self.setLayout(self.layout)
+        # Login button
+        self.login_button = QtWidgets.QPushButton("Login", self)
+        self.login_button.setFixedHeight(40)
+        self.login_button.clicked.connect(self.login)
+
+        self.config_button = QtWidgets.QPushButton("Configure", self)
+        self.config_button.setFixedHeight(40)
+        self.config_button.clicked.connect(self.openConfigurations)
+        # self.setLayout(self.layout)
+
+        # Layouts
+        self.layout = QtWidgets.QVBoxLayout()
+        self.layout.addWidget(self.logo_label)
+        self.layout.addWidget(self.title_label)
+        self.layout.addSpacing(10)
+        self.layout.addWidget(self.username_label)
+        self.layout.addWidget(self.username_input)
+        self.layout.addSpacing(10)
+        self.layout.addWidget(self.password_label)
+        self.layout.addWidget(self.password_input)
+        self.layout.addSpacing(20)
+        self.layout.addWidget(self.config_button)
+        self.layout.addWidget(self.login_button)
+
+        self.setLayout(self.layout)
+        # else:
+        #     self.layout = QtWidgets.QVBoxLayout()
+        #     self.layout.addWidget(QtWidgets.QLabel('No Authentication Url Defined'))
+        #     self.layout.addSpacing(10)
+        #
+        #     self.config_button = QtWidgets.QPushButton("Configure", self)
+        #     self.config_button.setFixedHeight(40)
+        #     self.config_button.clicked.connect(self.login)
+        #     self.setLayout(self.layout)
+
+    def openConfigurations(self):
+        dlg = TSConfigurationsDialog()
+
+        # show the dialog
+        # dlg.show()
+        # Run the dialog event loop
+        result = dlg.exec_()
 
     def login(self):
+        pocketbaseUrl = self.config.get("PocketBase")
+        self.loginUrl = urljoin(pocketbaseUrl, '/api/collections/users/auth-with-password')
+        if not pocketbaseUrl:
+            QtWidgets.QMessageBox.warning(self, "No login configuration found", "Please configure tile server first to ensure login url!")
+            return
         username = self.username_input.text()
         password = self.password_input.text()
         data = {'identity': username, 'password': password}
@@ -128,6 +147,13 @@ class LoginDialog(QtWidgets.QDialog):
 
     def verify_login_online(self):
         # Retrieve the stored token
+        pocketbaseUrl = self.config.get("PocketBase")
+        self.verifyLogin = urljoin(pocketbaseUrl, '/api/collections/users/auth-with-password')
+        if not pocketbaseUrl:
+            QtWidgets.QMessageBox.warning(self, "No login configuration found",
+                                        "Please configure tile server first to ensure login url!")
+            return
+
         settings = QSettings()
         token = settings.value('plugin/token', None)
 

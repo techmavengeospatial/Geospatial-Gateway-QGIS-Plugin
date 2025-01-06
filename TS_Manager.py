@@ -206,6 +206,7 @@ class TSManager:
             #     self.runTSManager()
             # return
         #
+        # self.runTSManager()
         if self.dialog.verify_login():
             self.runTSManager()
         else:

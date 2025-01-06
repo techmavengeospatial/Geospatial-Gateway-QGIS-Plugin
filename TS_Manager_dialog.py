@@ -20,7 +20,7 @@ class TSManagerDialog(QDialog):
     def __init__(self,iface , loginDialog):
         super(TSManagerDialog, self).__init__()
         self.iface = iface
-        self.setWindowTitle("Tile Server Manager")
+        self.setWindowTitle("Geospatial Gateway for Tile Server")
         self.loginDialog = loginDialog
         # Set background color and window size
         self.setStyleSheet("background-color: #f0f0f0;")
